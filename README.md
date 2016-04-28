@@ -10,6 +10,7 @@ To implement your installation using this image, create your own Dockerfile usin
 
     FROM squareweave/bedrocker
 
+
 The project installs Bedrock into `/app`, and sets the Apache webroot to be `/app/web`. WordPress is installed (as you would expect) to `/app/web/wp`.
 
 wp-cli is installed as the command `wp`, and you can run this by `docker exec -ti [name of your container] wp`. Composer is installed as `composer`, and you can run that in a similar fashion.
@@ -20,6 +21,12 @@ Example of using composer in your build:
 
     COPY composer.json composer.lock /app/
     RUN composer install && composer clear-cache
+
+Note: To get the benefit of upstream WordPress updates, it's important that you remove the following requirement/s (if they're present) from your composer.json:
+
+    "johnpbloch/wordpress": "...."
+    "johnpbloch/wordpress-core-installer": "...."
+
 
 
 To add themes, plugins, etc, all you need to do is `COPY` those into your project. An easy way to do this is to have an `app` directory in your project which is copied into the /app

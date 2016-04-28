@@ -34,7 +34,10 @@ RUN set -xe && \
     tar --strip-components=1 -xzf /tmp/bedrock.tar.gz -C /app && \
     rm /tmp/bedrock.tar.gz && \
     chown -R www-data:www-data /app && \
-    ln -s /usr/src/wordpress /app/web/wp && \
+    composer install --no-interaction && \
+    composer remove johnpbloch/wordpress-core-installer johnpbloch/wordpress --no-interaction && \
+    composer clear-cache && \
+    mv /usr/src/wordpress /app/web/wp && \
     true
 
 RUN { \
@@ -42,6 +45,7 @@ RUN { \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
     sed -i 's#DocumentRoot.*#DocumentRoot /app/web#' /etc/apache2/apache2.conf && \
     sed -i 's#<Directory /var/www/>.*#<Directory /app/web/>#' /etc/apache2/apache2.conf && \
+    mkdir -p /app/web/app/uploads && \
     true
 
 VOLUME [/app/web/app/uploads]
