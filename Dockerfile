@@ -17,6 +17,7 @@ RUN set -xe && \
         --no-install-recommends \
         && \
     docker-php-ext-install zip && \
+    apt-get clean && \
     rm -r /var/lib/apt/lists/*
 
 RUN set -xe && \
@@ -48,7 +49,7 @@ RUN { \
     mkdir -p /app/web/app/uploads && \
     true
 
-VOLUME [/app/web/app/uploads]
+VOLUME /app/web/app/uploads
 
 ENTRYPOINT []
 CMD ["apache2-foreground"]
