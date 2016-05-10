@@ -1,0 +1,24 @@
+FROM squareweave/bedrocker:latest
+
+RUN set -xe && \
+    apt-get -qq update && \
+    apt-get -qq install \
+        apt-transport-https \
+        --no-install-recommends && \
+    curl -sL 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key' | apt-key add - && \
+    echo 'deb https://deb.nodesource.com/node_5.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get -qq update && \
+    apt-get -qq install \
+        nodejs \
+        --no-install-recommends \
+        && \
+    rm /etc/apt/sources.list.d/nodesource.list && \
+    apt-key del 68576280 && \
+    apt-get purge -qq --auto-remove \
+        -o APT::AutoRemove::RecommendsImportant=false \
+        -o APT::AutoRemove::SuggestsImportant=false \
+        apt-transport-https \
+        && \
+    apt-get clean && \
+    rm -r /var/lib/apt/lists/* && \
+    true
