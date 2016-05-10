@@ -1,11 +1,10 @@
 FROM wordpress:4-apache
 
-# Version control of Bedrock
-ENV BEDROCK_VERSION 1.6.3
-ENV BEDROCK_SHA1 ecc65a6f13eecfc9f4867596d90b72f3498d1363
-ENV WP_CLI_VERSION 0.23.1
-ENV WP_CLI_SHA1 359b41d7cabd4f1a6ea83400b6a337443e6e7331
-ENV COMPOSER_SETUP_SHA384 92102166af5abdb03f49ce52a40591073a7b859a86e8ff13338cf7db58a19f7844fbc0bb79b2773bf30791e935dbd938
+ENV BEDROCK_VERSION=1.6.3 \
+    BEDROCK_SHA1=ecc65a6f13eecfc9f4867596d90b72f3498d1363 \
+    WP_CLI_VERSION=0.23.1 \
+    WP_CLI_SHA1=359b41d7cabd4f1a6ea83400b6a337443e6e7331 \
+    COMPOSER_SETUP_SHA384=92102166af5abdb03f49ce52a40591073a7b859a86e8ff13338cf7db58a19f7844fbc0bb79b2773bf30791e935dbd938
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
@@ -67,3 +66,26 @@ VOLUME /app/web/app/uploads
 
 ENTRYPOINT []
 CMD ["apache2-foreground"]
+
+RUN set -xe && \
+    apt-get -qq update && \
+    apt-get -qq install \
+        apt-transport-https \
+        --no-install-recommends && \
+    curl -sL 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key' | apt-key add - && \
+    echo 'deb https://deb.nodesource.com/node_5.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get -qq update && \
+    apt-get -qq install \
+        nodejs \
+        --no-install-recommends \
+        && \
+    rm /etc/apt/sources.list.d/nodesource.list && \
+    apt-key del 68576280 && \
+    apt-get purge -qq --auto-remove \
+        -o APT::AutoRemove::RecommendsImportant=false \
+        -o APT::AutoRemove::SuggestsImportant=false \
+        apt-transport-https \
+        && \
+    apt-get clean && \
+    rm -r /var/lib/apt/lists/* && \
+    true
