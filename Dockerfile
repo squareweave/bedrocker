@@ -1,8 +1,8 @@
 FROM wordpress:4-apache
 
 # Version control of Bedrock
-ENV BEDROCK_VERSION 1.6.2
-ENV BEDROCK_SHA1 2f7dc9670855458f78349b5dd7f1eb98ac360fe8
+ENV BEDROCK_VERSION 1.6.3
+ENV BEDROCK_SHA1 ecc65a6f13eecfc9f4867596d90b72f3498d1363
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
@@ -18,7 +18,8 @@ RUN set -xe && \
         && \
     docker-php-ext-install zip && \
     apt-get clean && \
-    rm -r /var/lib/apt/lists/*
+    rm -r /var/lib/apt/lists/* && \
+    true
 
 RUN set -xe && \
     curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
@@ -36,12 +37,16 @@ RUN set -xe && \
     rm /tmp/bedrock.tar.gz && \
     chown -R www-data:www-data /app && \
     composer install --no-interaction && \
-    composer remove johnpbloch/wordpress-core-installer johnpbloch/wordpress --no-interaction && \
+    composer remove \
+             johnpbloch/wordpress-core-installer \
+             johnpbloch/wordpress \
+             --no-interaction && \
     composer clear-cache && \
     mv /usr/src/wordpress /app/web/wp && \
     true
 
-RUN { \
+RUN set -xe && \
+    { \
         echo 'date.timezone = ${DEFAULT_TIMEZONE}'; \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
     sed -i 's#DocumentRoot.*#DocumentRoot /app/web#' /etc/apache2/apache2.conf && \
