@@ -46,7 +46,6 @@ RUN set -xe && \
     chown -R www-data:www-data /app && \
     composer install --no-interaction && \
     composer remove \
-             johnpbloch/wordpress-core-installer \
              johnpbloch/wordpress \
              --no-interaction && \
     composer clear-cache && \

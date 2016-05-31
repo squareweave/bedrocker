@@ -11,7 +11,7 @@ bedrockShaKeys=(
 
 wpCliVersion=0.23.1
 wpCliShaKey=359b41d7cabd4f1a6ea83400b6a337443e6e7331
-composerSetupShaKey=92102166af5abdb03f49ce52a40591073a7b859a86e8ff13338cf7db58a19f7844fbc0bb79b2773bf30791e935dbd938
+composerSetupShaKey=070854512ef404f16bac87071a6db9fd9721da1684cd4589b1196c3faf71b9a2682e2311b36a5079825e155ac7ce150d
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then

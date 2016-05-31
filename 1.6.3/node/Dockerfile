@@ -4,7 +4,7 @@ ENV BEDROCK_VERSION=1.6.3 \
     BEDROCK_SHA1=ecc65a6f13eecfc9f4867596d90b72f3498d1363 \
     WP_CLI_VERSION=0.23.1 \
     WP_CLI_SHA1=359b41d7cabd4f1a6ea83400b6a337443e6e7331 \
-    COMPOSER_SETUP_SHA384=92102166af5abdb03f49ce52a40591073a7b859a86e8ff13338cf7db58a19f7844fbc0bb79b2773bf30791e935dbd938
+    COMPOSER_SETUP_SHA384=070854512ef404f16bac87071a6db9fd9721da1684cd4589b1196c3faf71b9a2682e2311b36a5079825e155ac7ce150d
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
@@ -46,7 +46,6 @@ RUN set -xe && \
     chown -R www-data:www-data /app && \
     composer install --no-interaction && \
     composer remove \
-             johnpbloch/wordpress-core-installer \
              johnpbloch/wordpress \
              --no-interaction && \
     composer clear-cache && \
