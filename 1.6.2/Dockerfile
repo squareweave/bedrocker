@@ -25,12 +25,13 @@ RUN set -xe && \
     true
 
 RUN set -xe && \
-    curl -L https://github.com/wp-cli/wp-cli/releases/download/v${WP_CLI_VERSION}/wp-cli-${WP_CLI_VERSION}.phar \
-        -o /usr/local/bin/wp && \
+    curl -sS -o /usr/local/bin/wp \
+        -L https://github.com/wp-cli/wp-cli/releases/download/v${WP_CLI_VERSION}/wp-cli-${WP_CLI_VERSION}.phar && \
     sha1sum /usr/local/bin/wp && \
     echo "$WP_CLI_SHA1 */usr/local/bin/wp" | sha1sum -c - && \
     chmod +x  /usr/local/bin/wp && \
-    curl -sS -o /tmp/composer-setup.php https://getcomposer.org/installer && \
+    curl -sS -o /tmp/composer-setup.php \
+        -L https://getcomposer.org/installer && \
     echo "$COMPOSER_SETUP_SHA384 */tmp/composer-setup.php" | shasum -c - && \
     php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer && \
     rm /tmp/composer-setup.php && \
@@ -39,7 +40,8 @@ RUN set -xe && \
 WORKDIR /app
 
 RUN set -xe && \
-    curl -o /tmp/bedrock.tar.gz -SL https://github.com/roots/bedrock/archive/${BEDROCK_VERSION}.tar.gz && \
+    curl -sS -o /tmp/bedrock.tar.gz \
+        -L https://github.com/roots/bedrock/archive/${BEDROCK_VERSION}.tar.gz && \
     echo "$BEDROCK_SHA1 */tmp/bedrock.tar.gz" | sha1sum -c - && \
     tar --strip-components=1 -xzf /tmp/bedrock.tar.gz -C /app && \
     rm /tmp/bedrock.tar.gz && \
@@ -49,7 +51,8 @@ RUN set -xe && \
              johnpbloch/wordpress \
              --no-interaction && \
     composer clear-cache && \
-    mv /usr/src/wordpress /app/web/wp && \
+    rm -rf /app/web/wp && \
+    ln -s /usr/src/wordpress /app/web/wp && \
     true
 
 RUN set -xe && \
@@ -58,6 +61,10 @@ RUN set -xe && \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
     sed -i 's#DocumentRoot.*#DocumentRoot /app/web#' /etc/apache2/apache2.conf && \
     sed -i 's#<Directory /var/www/>.*#<Directory /app/web/>#' /etc/apache2/apache2.conf && \
+    { \
+        echo "<?php"; \
+        echo "require(\$_SERVER['DOCUMENT_ROOT'] . '/wp-config.php');"; \
+    } > /usr/src/wordpress/wp-config.php && \
     mkdir -p /app/web/app/uploads && \
     true
 
