@@ -54,4 +54,7 @@ for version in "${versions[@]}"; do
             s!%%COMPOSER_SETUP_SHA384%%!'"$composerSetupShaKey"'!;
         ' "${dockerfiles[@]}"
     )
+
+    cp wordpress-rewrite.conf $version
+    cp wordpress-rewrite.conf $version/node
 done

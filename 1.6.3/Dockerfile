@@ -46,7 +46,7 @@ RUN set -xe && \
     tar --strip-components=1 -xzf /tmp/bedrock.tar.gz -C /app && \
     rm /tmp/bedrock.tar.gz && \
     chown -R www-data:www-data /app && \
-    composer install --no-interaction && \
+    composer install --no-interaction --no-dev && \
     composer remove \
              johnpbloch/wordpress \
              --no-interaction && \
@@ -55,12 +55,14 @@ RUN set -xe && \
     ln -s /usr/src/wordpress /app/web/wp && \
     true
 
+COPY wordpress-rewrite.conf /etc/apache2/conf-available/wordpress-rewrite.conf
 RUN set -xe && \
     { \
         echo 'date.timezone = ${DEFAULT_TIMEZONE}'; \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
     sed -i 's#DocumentRoot.*#DocumentRoot /app/web#' /etc/apache2/apache2.conf && \
     sed -i 's#<Directory /var/www/>.*#<Directory /app/web/>#' /etc/apache2/apache2.conf && \
+    ln -s /etc/apache2/conf-available/wordpress-rewrite.conf /etc/apache2/conf-enabled/wordpress-rewrite.conf && \
     { \
         echo "<?php"; \
         echo "require(\$_SERVER['DOCUMENT_ROOT'] . '/wp-config.php');"; \
