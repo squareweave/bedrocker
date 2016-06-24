@@ -3,8 +3,7 @@ FROM wordpress:4-apache
 ENV BEDROCK_VERSION=%%BEDROCK_VERSION%% \
     BEDROCK_SHA1=%%BEDROCK_SHA1%% \
     WP_CLI_VERSION=%%WP_CLI_VERSION%% \
-    WP_CLI_SHA1=%%WP_CLI_SHA1%% \
-    COMPOSER_SETUP_SHA384=%%COMPOSER_SETUP_SHA384%%
+    WP_CLI_SHA1=%%WP_CLI_SHA1%%
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
@@ -32,7 +31,6 @@ RUN set -xe && \
     chmod +x  /usr/local/bin/wp && \
     curl -sS -o /tmp/composer-setup.php \
         -L https://getcomposer.org/installer && \
-    echo "$COMPOSER_SETUP_SHA384 */tmp/composer-setup.php" | shasum -c - && \
     php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer && \
     rm /tmp/composer-setup.php && \
     true

@@ -11,7 +11,6 @@ bedrockShaKeys=(
 
 wpCliVersion=0.23.1
 wpCliShaKey=359b41d7cabd4f1a6ea83400b6a337443e6e7331
-composerSetupShaKey=070854512ef404f16bac87071a6db9fd9721da1684cd4589b1196c3faf71b9a2682e2311b36a5079825e155ac7ce150d
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
@@ -51,7 +50,6 @@ for version in "${versions[@]}"; do
             s!%%BEDROCK_SHA1%%!'"$bedrockShaKey"'!;
             s!%%WP_CLI_VERSION%%!'"$wpCliVersion"'!;
             s!%%WP_CLI_SHA1%%!'"$wpCliShaKey"'!;
-            s!%%COMPOSER_SETUP_SHA384%%!'"$composerSetupShaKey"'!;
         ' "${dockerfiles[@]}"
     )
 
