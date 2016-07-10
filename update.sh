@@ -7,6 +7,7 @@ declare -A bedrockShaKeys
 bedrockShaKeys=(
 	[1.6.2]='2f7dc9670855458f78349b5dd7f1eb98ac360fe8'
 	[1.6.3]='ecc65a6f13eecfc9f4867596d90b72f3498d1363'
+	[1.7.0]='43c8ef28fb100441efd0fb80244f979c7859f983'
 )
 
 wpCliVersion=0.23.1
