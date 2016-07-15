@@ -59,7 +59,8 @@ RUN set -xe && \
     { \
         echo 'date.timezone = ${DEFAULT_TIMEZONE}'; \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
-    sed -i 's#DocumentRoot.*#DocumentRoot /app/web#' /etc/apache2/apache2.conf && \
+    echo "DocumentRoot /app/web" >> /etc/apache2/apache2.conf && \
+    rm /etc/apache2/sites-enabled/000-default.conf && \
     sed -i 's#<Directory /var/www/>.*#<Directory /app/web/>#' /etc/apache2/apache2.conf && \
     ln -s /etc/apache2/conf-available/wordpress-rewrite.conf /etc/apache2/conf-enabled/wordpress-rewrite.conf && \
     { \
