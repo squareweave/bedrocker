@@ -48,6 +48,7 @@ RUN set -xe && \
     composer remove \
              johnpbloch/wordpress \
              --no-interaction && \
+    composer install --no-interaction --no-dev && \
     composer clear-cache && \
     rm -rf /app/web/wp && \
     ln -s /usr/src/wordpress /app/web/wp && \
@@ -65,6 +66,12 @@ RUN set -xe && \
         echo "<?php"; \
         echo "require(\$_SERVER['DOCUMENT_ROOT'] . '/wp-config.php');"; \
     } > /usr/src/wordpress/wp-config.php && \
+    { \
+        echo ""; \
+        echo "if (file_exists(__DIR__ . '/application.local.php')) {"; \
+        echo "    require(__DIR__ . '/application.local.php');"; \
+        echo "}"; \
+    } >> /app/config/application.php && \
     mkdir -p /app/web/app/uploads && \
     true
 
