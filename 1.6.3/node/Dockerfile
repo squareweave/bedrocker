@@ -66,7 +66,7 @@ RUN set -xe && \
     ln -s /etc/apache2/conf-available/wordpress-rewrite.conf /etc/apache2/conf-enabled/wordpress-rewrite.conf && \
     { \
         echo "<?php"; \
-        echo "require((\$_SERVER['DOCUMENT_ROOT'] ?: \$_SERVER['WEBROOT']) . '/wp-config.php');"; \
+        echo "require('/app/web/wp-config.php');"; \
         echo "require_once(ABSPATH . 'wp-settings.php');"; \
     } > /usr/src/wordpress/wp-config.php && \
     { \
