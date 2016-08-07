@@ -8,7 +8,8 @@ ENV BEDROCK_VERSION=%%BEDROCK_VERSION%% \
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     WP_ENV=production \
-    DEFAULT_TIMEZONE=Australia/Melbourne
+    DEFAULT_TIMEZONE=Australia/Melbourne \
+    WEBROOT=/app/web
 
 RUN set -xe && \
     apt-get -qq update && \
@@ -65,7 +66,8 @@ RUN set -xe && \
     ln -s /etc/apache2/conf-available/wordpress-rewrite.conf /etc/apache2/conf-enabled/wordpress-rewrite.conf && \
     { \
         echo "<?php"; \
-        echo "require(\$_SERVER['DOCUMENT_ROOT'] . '/wp-config.php');"; \
+        echo "require((\$_SERVER['DOCUMENT_ROOT'] ?: \$_SERVER['WEBROOT']) . '/wp-config.php');"; \
+        echo "require_once(ABSPATH . 'wp-settings.php');"; \
     } > /usr/src/wordpress/wp-config.php && \
     { \
         echo ""; \
