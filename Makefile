@@ -1,5 +1,5 @@
 DOCKER := docker
-VERSIONS ?= 1.6.2 1.6.3 1.7.0 1.7.1
+VERSIONS ?= 1.6.2 1.6.3 1.7.0 1.7.1 1.7.2
 
 generate: clean
 	$(DOCKER) run --rm -ti -v $(PWD):/source -w /source debian:jessie bash update.sh ${VERSIONS}
