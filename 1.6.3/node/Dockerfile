@@ -60,6 +60,10 @@ RUN set -xe && \
     { \
         echo 'date.timezone = ${DEFAULT_TIMEZONE}'; \
     } > /usr/local/etc/php/conf.d/date-timezone.ini && \
+    { \
+        echo 'upload_max_filesize=20M'; \
+        echo 'post_max_size=60M'; \
+    } > /usr/local/etc/php/conf.d/upload-limit.ini && \
     echo "DocumentRoot /app/web" >> /etc/apache2/apache2.conf && \
     rm /etc/apache2/sites-enabled/000-default.conf && \
     sed -i 's#<Directory /var/www/>.*#<Directory /app/web/>#' /etc/apache2/apache2.conf && \
